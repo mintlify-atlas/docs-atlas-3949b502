@@ -1,0 +1,131 @@
+---
+title: "Installation"
+description: "Set up Manitern Pro on your local machine"
+---
+
+## Prerequisites
+
+Before you begin, make sure the following are installed on your machine:
+
+- **PHP 8.1 or higher** — required by Laravel 10
+- **Composer** — PHP dependency manager
+- **Node.js** (with npm) — required for frontend asset compilation
+- **MySQL** — the database used by Manitern Pro
+
+<Note>
+  Laravel 10 requires the following PHP extensions: BCMath, Ctype, cURL, DOM, Fileinfo, JSON, Mbstring, OpenSSL, PCRE, PDO, Tokenizer, and XML. Most of these are enabled by default in standard PHP installations. Verify with `php -m`.
+</Note>
+
+## Steps
+
+<Steps>
+  <Step title="Clone the repository">
+    Clone the Manitern Pro repository to your local machine:
+
+    ```bash
+    git clone https://github.com/senmos26/maniternpro.git
+    cd maniternpro
+    ```
+  </Step>
+
+  <Step title="Install PHP dependencies">
+    Install all PHP packages defined in `composer.json`, including Laravel 10, Laravel Sanctum, and barryvdh/laravel-dompdf:
+
+    ```bash
+    composer install
+    ```
+  </Step>
+
+  <Step title="Install JavaScript dependencies">
+    Install the Node.js packages defined in `package.json`, including Vite, Tailwind CSS, and Alpine.js:
+
+    <CodeGroup>
+
+    ```bash npm
+    npm install
+    ```
+
+    ```bash yarn
+    yarn install
+    ```
+
+    </CodeGroup>
+  </Step>
+
+  <Step title="Copy the environment file">
+    Create your local environment configuration file from the provided example:
+
+    ```bash
+    cp .env.example .env
+    ```
+
+    You will configure this file in the next step. See [Configuration](/getting-started/configuration) for details on all available variables.
+  </Step>
+
+  <Step title="Generate the application key">
+    Generate a unique application encryption key and write it to `APP_KEY` in your `.env` file:
+
+    ```bash
+    php artisan key:generate
+    ```
+  </Step>
+
+  <Step title="Configure the database">
+    Open `.env` and update the database connection values to match your local MySQL setup:
+
+    ```ini .env
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=maniternpro
+    DB_USERNAME=root
+    DB_PASSWORD=
+    ```
+
+    See [Configuration](/getting-started/configuration) for the full list of environment variables.
+  </Step>
+
+  <Step title="Run database migrations">
+    Create all application tables — including `stagiaires`, `stages`, `cvs`, `absences`, `attestations`, `etablissements`, `services`, and `bureaus`:
+
+    ```bash
+    php artisan migrate
+    ```
+  </Step>
+
+  <Step title="Link the storage directory">
+    Create a symbolic link from `public/storage` to `storage/app/public`. This is required for CV file uploads to be publicly accessible:
+
+    ```bash
+    php artisan storage:link
+    ```
+  </Step>
+
+  <Step title="Build frontend assets">
+    Compile the Tailwind CSS and Alpine.js assets using Vite:
+
+    <CodeGroup>
+
+    ```bash production
+    npm run build
+    ```
+
+    ```bash development
+    npm run dev
+    ```
+
+    </CodeGroup>
+
+    Use `npm run dev` to start the Vite development server with hot module replacement. Use `npm run build` for a one-time production build.
+  </Step>
+
+  <Step title="Start the development server">
+    Start the Laravel built-in development server:
+
+    ```bash
+    php artisan serve
+    ```
+
+    The application will be available at `http://127.0.0.1:8000` by default.
+  </Step>
+</Steps>

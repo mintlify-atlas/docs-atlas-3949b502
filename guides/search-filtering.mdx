@@ -1,0 +1,81 @@
+---
+title: "Search and filtering"
+description: "Find trainees and absences quickly using built-in search tools"
+---
+
+Manitern Pro provides keyword-based search on both the Stagiaires (trainees) and Absences listing pages. Both features use a `LIKE %keyword%` query pattern, so any partial string match against the indexed columns will return results.
+
+<Note>
+  All searches are case-insensitive. The underlying SQL uses `LIKE "%keyword%"`, so `"dupont"`, `"Dupont"`, and `"DUPONT"` will all return the same results.
+</Note>
+
+## Trainee search
+
+**Route:** `POST /filtersta`
+
+The trainee search performs a full-text keyword search across multiple columns and related tables simultaneously. A single keyword is matched against:
+
+| Column | Table / relation |
+|---|---|
+| `cin` | `stagiaires` |
+| `nom` | `stagiaires` |
+| `prenom` | `stagiaires` |
+| `email` | `stagiaires` |
+| `tel` | `stagiaires` |
+| `nom` (institution name) | `etablissements` (via `etablissement` relation) |
+| `titre_sujet` (stage title) | `stages` (via `stage` relation) |
+| `nom` (bureau name) | `bureaux` (via `bureau` relation) |
+
+### How to search for a trainee
+
+<Steps>
+  <Step title="Open the Stagiaires listing">
+    Navigate to **Stagiaires** (`/Stagiaires`) in the sidebar.
+  </Step>
+  <Step title="Enter a keyword">
+    Type a keyword into the search box. You can use a partial value — for example, `"ben"` to match any trainee whose name, institution, or stage title contains that string.
+  </Step>
+  <Step title="Submit the form">
+    Submit the search form. The page reloads and displays only the trainees that match the keyword across any of the indexed fields.
+  </Step>
+</Steps>
+
+<Tip>
+  Use a short partial keyword (e.g. the first few letters of a name or institution) to cast a wider net when you are unsure of the exact spelling. Because the search covers both trainee fields and related table fields, a single keyword like `"info"` could match trainees whose stage title contains "Informatique" or whose bureau name contains "Information".
+</Tip>
+
+---
+
+## Absence filter
+
+**Route:** `POST /filterabs`
+
+The absence filter searches across absence records and their linked trainee data using a single keyword. The keyword is matched against:
+
+| Column | Table / relation |
+|---|---|
+| `nom` | `stagiaires` (via `stagiaire` relation) |
+| `prenom` | `stagiaires` (via `stagiaire` relation) |
+| `email` | `stagiaires` (via `stagiaire` relation) |
+| `tel` | `stagiaires` (via `stagiaire` relation) |
+| `date_debut` | `absences` |
+| `date_fin` | `absences` |
+| `justification` | `absences` |
+
+### How to filter absences
+
+<Steps>
+  <Step title="Open the Absences listing">
+    Navigate to **Absences** (`/absences/index`) in the sidebar.
+  </Step>
+  <Step title="Enter a keyword">
+    Type a keyword into the filter form. You can search by trainee name, email, phone number, a date string (e.g. `"2024-03"`), or any word appearing in the justification text.
+  </Step>
+  <Step title="Submit the form">
+    Submit the filter form. The page reloads showing only absence records that match the keyword in any of the indexed fields.
+  </Step>
+</Steps>
+
+<Tip>
+  To find all absences for a specific month, enter a partial date string such as `"2024-06"`. The filter matches against the stored `date_debut` and `date_fin` values using `LIKE`, so any date containing that substring will be returned.
+</Tip>

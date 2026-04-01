@@ -1,0 +1,236 @@
+---
+title: "Deployment"
+description: "Deploy Manitern Pro to a production server"
+---
+
+This guide covers deploying Manitern Pro to a Linux production server. The application is a standard Laravel 10 project backed by MySQL and DomPDF for PDF generation.
+
+## Requirements
+
+### PHP
+
+PHP **8.1 or higher** with the following extensions enabled:
+
+- BCMath
+- Ctype
+- Fileinfo
+- JSON
+- Mbstring
+- OpenSSL
+- PDO
+- PDO\_MySQL
+- Tokenizer
+- XML
+
+### Database
+
+MySQL **5.7+** or MariaDB **10.3+**.
+
+### Other dependencies
+
+- Composer (latest stable)
+- Node.js and npm (for building frontend assets with Vite)
+- Apache or Nginx web server
+- The `storage/` and `bootstrap/cache/` directories must be writable by the web server process
+
+---
+
+## Deployment steps
+
+<Steps>
+  <Step title="Clone the repository">
+    Clone the project to your server's deployment directory, for example `/var/www/maniternpro`:
+
+    ```bash
+    git clone https://github.com/your-org/maniternpro.git /var/www/maniternpro
+    ```
+  </Step>
+
+  <Step title="Install PHP dependencies">
+    Install Composer dependencies without dev packages and with the autoloader optimized for production:
+
+    ```bash
+    composer install --no-dev --optimize-autoloader
+    ```
+  </Step>
+
+  <Step title="Build frontend assets">
+    Install Node dependencies and compile the Vite-bundled assets:
+
+    ```bash
+    npm install && npm run build
+    ```
+  </Step>
+
+  <Step title="Copy and configure the environment file">
+    Copy `.env.example` to `.env`, then open it and set the required production values:
+
+    ```bash
+    cp .env.example .env
+    ```
+
+    At a minimum, update:
+
+    - `APP_ENV=production`
+    - `APP_DEBUG=false`
+    - `APP_URL` to your public domain (e.g. `https://maniternpro.example.com`)
+    - All `DB_*` credentials to point to your production database
+
+    See the [Environment variables](#environment-variables) section below for a minimal example.
+  </Step>
+
+  <Step title="Generate the application key">
+    ```bash
+    php artisan key:generate
+    ```
+
+    This writes a unique `APP_KEY` value into your `.env` file. This key is used for encryption and must not be shared.
+  </Step>
+
+  <Step title="Configure database credentials">
+    Verify that the `DB_*` variables in `.env` are correct for your production database server:
+
+    ```dotenv
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=maniternpro
+    DB_USERNAME=your_db_user
+    DB_PASSWORD=your_db_password
+    ```
+  </Step>
+
+  <Step title="Run database migrations">
+    Apply all migrations against the production database. The `--force` flag is required because Laravel will otherwise refuse to run migrations in a production environment:
+
+    ```bash
+    php artisan migrate --force
+    ```
+  </Step>
+
+  <Step title="Create the storage symlink">
+    Create a symbolic link from `public/storage` to `storage/app/public`. This is required for serving uploaded files such as trainee CVs:
+
+    ```bash
+    php artisan storage:link
+    ```
+  </Step>
+
+  <Step title="Set file permissions">
+    Ensure the web server process can write to the storage and cache directories:
+
+    ```bash
+    chmod -R 775 storage/ bootstrap/cache/
+    chown -R www-data:www-data storage/ bootstrap/cache/
+    ```
+
+    Replace `www-data` with the user your web server runs as if it differs.
+  </Step>
+
+  <Step title="Point your web server to public/">
+    Configure your web server to use the `public/` directory as the document root. See the [Nginx configuration](#nginx-configuration) section below for a ready-to-use server block.
+  </Step>
+
+  <Step title="Set up the Laravel scheduler (optional)">
+    If you use scheduled tasks, add a cron entry for the Laravel scheduler on the server:
+
+    ```bash
+    crontab -e
+    ```
+
+    Add the following line, replacing the path with your actual deployment path:
+
+    ```bash
+    * * * * * cd /var/www/maniternpro && php artisan schedule:run >> /dev/null 2>&1
+    ```
+  </Step>
+</Steps>
+
+---
+
+## Environment variables
+
+The following is a minimal production `.env` based on `.env.example`. Only the values that differ from development defaults are shown:
+
+```dotenv
+APP_NAME="Manitern Pro"
+APP_ENV=production
+APP_KEY=base64:GENERATED_BY_ARTISAN_KEY_GENERATE=
+APP_DEBUG=false
+APP_URL=https://maniternpro.example.com
+
+LOG_CHANNEL=stack
+LOG_LEVEL=error
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=maniternpro
+DB_USERNAME=your_db_user
+DB_PASSWORD=your_db_password
+
+CACHE_DRIVER=file
+FILESYSTEM_DISK=local
+QUEUE_CONNECTION=sync
+SESSION_DRIVER=file
+SESSION_LIFETIME=120
+```
+
+<Warning>
+  Always set `APP_DEBUG=false` in production. With debug mode enabled, Laravel displays detailed error pages that expose environment variables, file paths, and application internals to anyone who triggers an error.
+</Warning>
+
+<Note>
+  The `php artisan storage:link` step creates the symlink that makes uploaded files (including trainee CVs stored under `storage/app/public/cvs`) accessible via the `public/storage` URL path. Without this symlink, CV files will return 404 errors.
+</Note>
+
+---
+
+## Nginx configuration
+
+The following is a standard Nginx server block for a Laravel application. Replace `maniternpro.example.com` and the path with your actual domain and deployment directory:
+
+```nginx
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name maniternpro.example.com;
+    root /var/www/maniternpro/public;
+
+    index index.php;
+
+    charset utf-8;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+
+    error_page 404 /index.php;
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+}
+```
+
+After saving the configuration, test it and reload Nginx:
+
+```bash
+nginx -t && systemctl reload nginx
+```
+
+For HTTPS, use [Certbot](https://certbot.eff.org/) to provision a Let's Encrypt certificate:
+
+```bash
+certbot --nginx -d maniternpro.example.com
+```

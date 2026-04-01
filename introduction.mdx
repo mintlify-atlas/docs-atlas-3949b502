@@ -1,0 +1,70 @@
+---
+title: "Welcome to Manitern Pro"
+description: "The complete internship management platform — track trainees, manage stages, record absences, and generate attestation certificates, all in one place."
+---
+
+Manitern Pro is a web-based internship management system built for organizations that host trainees (stagiaires). It gives your team a centralized workspace to manage every stage of an internship lifecycle: from onboarding trainees and assigning them to bureaux, to recording absences and issuing official attestation PDFs.
+
+<CardGroup cols={2}>
+  <Card title="Quick installation" icon="rocket" href="/getting-started/installation">
+    Get Manitern Pro running locally in minutes with PHP, Composer, and MySQL.
+  </Card>
+  <Card title="Configure your environment" icon="gear" href="/getting-started/configuration">
+    Set up your database connection, mail settings, and application keys.
+  </Card>
+  <Card title="Manage trainees" icon="users" href="/features/stagiaires">
+    Register stagiaires, upload CVs, and track their progress across bureaux and stages.
+  </Card>
+  <Card title="Generate attestations" icon="file-pdf" href="/features/attestations">
+    Issue and export official PDF attestation certificates with a single click.
+  </Card>
+</CardGroup>
+
+## What you can do with Manitern Pro
+
+Manitern Pro covers every operational need of an internship program:
+
+- **Trainees (Stagiaires)** — Register trainees with full profile data including CIN, institution, stage assignment, and bureau. Upload and manage CV files.
+- **Internships (Stages)** — Create and track internship subjects with start/end dates and status lifecycle.
+- **Absences** — Record and filter trainee absences with justification and date ranges.
+- **Attestations** — Generate and export signed PDF attestation documents. Track delivery status (remis / non remis).
+- **Institutions (Etablissements)** — Maintain a directory of partner institutions and link trainees to them.
+- **Services & Bureaux** — Organize your org structure into services and bureaux, then assign trainees accordingly.
+- **Dashboard** — Get an at-a-glance overview of all activity with live statistics and charts.
+
+## Getting started
+
+<Steps>
+  <Step title="Install the application">
+    Clone the repository, install PHP and JavaScript dependencies, and configure your `.env` file. See [Installation](/getting-started/installation).
+  </Step>
+  <Step title="Configure your environment">
+    Set up your database connection and run migrations to create all required tables. See [Configuration](/getting-started/configuration).
+  </Step>
+  <Step title="Create your admin account">
+    Register the first user account through the `/register` route. This account will have full access to all features.
+  </Step>
+  <Step title="Add your organization structure">
+    Start by creating your [Services](/administration/services), then [Bureaux](/administration/bureaux), and [Etablissements](/administration/etablissements) before adding trainees.
+  </Step>
+  <Step title="Register your first trainee">
+    Navigate to **Stagiaires → Add Stagiaire**, fill in the trainee's details, and upload their CV. The trainee is now tracked in the system.
+  </Step>
+</Steps>
+
+## Explore the docs
+
+<CardGroup cols={2}>
+  <Card title="Dashboard overview" icon="chart-pie" href="/features/dashboard">
+    Understand the statistics and charts available on your dashboard.
+  </Card>
+  <Card title="Stages management" icon="briefcase" href="/features/stages">
+    Create and manage internship subjects, dates, and statuses.
+  </Card>
+  <Card title="Absence tracking" icon="calendar-xmark" href="/features/absences">
+    Record absences and filter by trainee, date, and justification.
+  </Card>
+  <Card title="PDF generation" icon="file-export" href="/guides/pdf-generation">
+    Learn how attestation PDFs are generated and downloaded.
+  </Card>
+</CardGroup>

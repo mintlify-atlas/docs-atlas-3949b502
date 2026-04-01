@@ -1,0 +1,78 @@
+---
+title: "Internships (Stages)"
+description: "Create and manage internship assignments"
+keywords: ["stages", "internships", "assignments", "statut", "date_debut", "date_fin"]
+---
+
+A stage represents a single internship assignment. Stages are created independently and then linked to trainees (stagiaires) when registering or editing a trainee profile. Each trainee can be associated with one stage, and that stage appears on their detail page.
+
+## What a stage record contains
+
+| Field | Description |
+|---|---|
+| Titre du sujet | The subject or title of the internship assignment (max 255 characters) |
+| Statut | Current status of the internship: **En cours** (ongoing) or **Terminé** (completed) |
+| Date de début | Start date of the internship |
+| Date de fin | End date of the internship (must be after the start date) |
+
+## Listing stages
+
+Navigate to **Stages** from the sidebar, or go directly to `/stage`. The page lists all stages in a table with their subject title, status, and start and end dates.
+
+From this page you can create a new stage, or use the action buttons on each row to edit or delete an existing one.
+
+## Creating a stage
+
+<Steps>
+  <Step title="Open the creation form">
+    Click the **Ajouter un stage** button on the stages listing page, or navigate to `/stages/create`.
+  </Step>
+  <Step title="Enter the subject title">
+    Fill in the **Titre du sujet** field with a descriptive name for the internship topic or project (required, max 255 characters).
+  </Step>
+  <Step title="Select the status">
+    Choose **En cours** if the internship is currently active, or **Terminé** if it has been completed.
+  </Step>
+  <Step title="Set the start and end dates">
+    Pick a **Date de début** and a **Date de fin**. Both are required, and the end date must be strictly after the start date.
+  </Step>
+  <Step title="Submit the form">
+    Click **Enregistrer**. You will be redirected to the stages list with a success message.
+  </Step>
+</Steps>
+
+### Form fields
+
+<ParamField body="titre_sujet" type="string" required>
+  Subject title for the internship. Must be a string up to 255 characters.
+</ParamField>
+
+<ParamField body="statut" type="string" required>
+  Internship status. Accepted values: `En cours` or `Terminé`.
+</ParamField>
+
+<ParamField body="date_debut" type="date" required>
+  Start date of the internship. Must be a valid date.
+</ParamField>
+
+<ParamField body="date_fin" type="date" required>
+  End date of the internship. Must be a valid date and must come after `date_debut`.
+</ParamField>
+
+## Editing a stage
+
+1. From the stages listing page, click the **Edit** button on the row you want to update. This opens `/stages/{id}/edit`.
+2. Modify any fields as needed.
+3. Click **Enregistrer** to save changes. You will be redirected to the stages list with a confirmation message.
+
+## Deleting a stage
+
+Click the **Delete** button on the desired row and confirm the action.
+
+<Warning>
+  A stage cannot be deleted if it is linked to one or more trainees. You will see the message "Impossible de supprimer le stage. Veuillez d'abord supprimer les enregistrements associés." Unlink or delete the associated trainee records before attempting to delete the stage.
+</Warning>
+
+## Stages and trainee profiles
+
+When you create or edit a trainee (stagiaire), you select a stage from a dropdown list. That stage is then displayed on the trainee's detail page, giving a clear picture of what the intern is working on and over what period.

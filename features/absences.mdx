@@ -1,0 +1,84 @@
+---
+title: "Absences"
+description: "Record and track trainee absences"
+keywords: ["absences", "attendance", "justification", "date_debut", "date_fin", "stagiaire"]
+---
+
+The absences module lets you log and track periods when a trainee was absent. Each absence record is linked to a specific trainee and captures the start date, end date, and a written justification.
+
+## What an absence record contains
+
+| Field | Description |
+|---|---|
+| Stagiaire | The trainee this absence is attributed to |
+| Date de début | The first day of the absence |
+| Date de fin | The last day of the absence (can be the same day as the start date) |
+| Justification | A text description of the reason for the absence (max 250 characters) |
+
+## Listing absences
+
+Navigate to **Absences** from the sidebar, or go directly to `/absences/index`. The page shows a table of all recorded absences with the linked trainee's name, the absence dates, and the justification.
+
+You can also use the search bar to filter the list — see [Filtering absences](#filtering-absences) below.
+
+## Recording an absence
+
+<Steps>
+  <Step title="Open the creation form">
+    Click the **Ajouter une absence** button on the absences listing page, or navigate to `/absences/create`.
+  </Step>
+  <Step title="Select the trainee">
+    Choose the relevant trainee from the **Stagiaire** dropdown. Only existing registered trainees appear in the list.
+  </Step>
+  <Step title="Set the absence dates">
+    Enter the **Date de début** (start date) and **Date de fin** (end date). The end date can be the same as the start date for a single-day absence. The end date cannot be before the start date.
+  </Step>
+  <Step title="Enter the justification">
+    Write a brief explanation in the **Justification** field (required, max 250 characters).
+  </Step>
+  <Step title="Submit the form">
+    Click **Enregistrer**. You will be redirected to the absences list with a success message.
+  </Step>
+</Steps>
+
+### Form fields
+
+<ParamField body="stagiaire_id" type="integer" required>
+  The ID of the trainee. Selected from the dropdown on the form. Must reference an existing stagiaire.
+</ParamField>
+
+<ParamField body="date_debut" type="date" required>
+  First day of the absence. Must be a valid date.
+</ParamField>
+
+<ParamField body="date_fin" type="date" required>
+  Last day of the absence. Must be a valid date and must be on or after `date_debut`.
+</ParamField>
+
+<ParamField body="justification" type="string" required>
+  Reason for the absence. Plain text, maximum 250 characters.
+</ParamField>
+
+## Editing an absence
+
+1. From the absences list, click the **Edit** button on the row you want to update. This opens `/absences/edit/{id}`.
+2. Adjust the trainee selection, dates, or justification as needed.
+3. Click **Enregistrer** to save. You will be redirected to the absences list with a confirmation message.
+
+## Deleting an absence
+
+Click the **Delete** button on the row you want to remove and confirm the action. The record is deleted immediately and you are returned to the absences list.
+
+## Filtering absences
+
+The absences list page includes a search bar that filters records by keyword. The search matches across:
+
+- Trainee's nom (family name)
+- Trainee's prénom (given name)
+- Trainee's email
+- Trainee's tél (phone)
+- Date de début
+- Date de fin
+- Justification text
+
+Type a keyword and submit to narrow the list. Clear the field and resubmit to return to the full list.

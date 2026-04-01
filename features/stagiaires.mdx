@@ -1,0 +1,129 @@
+---
+title: "Trainees (Stagiaires)"
+description: "Register, manage, and track your interns"
+keywords: ["stagiaires", "trainees", "interns", "CV", "CIN", "register", "search"]
+---
+
+A stagiaire record represents a single intern enrolled in your program. Each record ties a person to an institution (établissement), an internship assignment (stage), and an office (bureau), and stores their personal contact details along with an uploaded CV.
+
+## What a trainee record contains
+
+Each stagiaire has the following information:
+
+| Field | Description |
+|---|---|
+| CIN | National identity card number (format: 2 letters + 5 digits, e.g. `AB12345`) |
+| Nom | Family name |
+| Prénom | Given name |
+| Email | Email address |
+| Tél | Phone number (Moroccan format, e.g. `0612345678` or `+212612345678`) |
+| Établissement | The educational institution the trainee comes from |
+| Stage | The internship assignment linked to this trainee |
+| Bureau | The office where the trainee is placed |
+| CV | Uploaded PDF file, stored under `storage/app/public/cvs` |
+
+## Viewing trainees
+
+Navigate to **Stagiaires** from the sidebar or dashboard quick-link card. The listing page (`/Stagiaires`) shows a table of all registered trainees with their name, CIN, email, phone, institution, stage, and bureau.
+
+From this page you can:
+
+- Search trainees using the search bar
+- Click a trainee row to view their full profile
+- Use the action buttons to edit or delete a record
+
+## Searching trainees
+
+The search bar on the trainees list page performs a keyword search across the following fields simultaneously:
+
+- CIN
+- Nom (family name)
+- Prénom (given name)
+- Email
+- Tél (phone)
+- Établissement name
+- Stage subject title
+- Bureau name
+
+Type any keyword and submit the form to filter the results. The search is case-insensitive and matches partial strings.
+
+## Adding a trainee
+
+<Note>
+  A PDF CV file is required when creating a new trainee. The form will not submit without one.
+</Note>
+
+<Steps>
+  <Step title="Open the creation form">
+    Click the **Ajouter un stagiaire** button on the trainees listing page, or navigate directly to `/stagiaires/create`.
+  </Step>
+  <Step title="Fill in the personal details">
+    Enter the trainee's CIN, nom, prénom, email, and telephone number. See the field requirements below.
+  </Step>
+  <Step title="Select the institution, stage, and bureau">
+    Use the three dropdown menus to link the trainee to an existing établissement, stage, and bureau. All three are required.
+  </Step>
+  <Step title="Upload the CV">
+    Click the CV file input and select a PDF file from your computer. Only PDF files are accepted.
+  </Step>
+  <Step title="Submit the form">
+    Click **Enregistrer**. On success you will be redirected to the trainees list with a confirmation message.
+  </Step>
+</Steps>
+
+### Form fields
+
+<ParamField body="cin" type="string" required>
+  National identity card number. Must follow the format of exactly 2 letters followed by 5 digits (e.g. `AB12345`).
+</ParamField>
+
+<ParamField body="nom" type="string" required>
+  Trainee's family name.
+</ParamField>
+
+<ParamField body="prenom" type="string" required>
+  Trainee's given name.
+</ParamField>
+
+<ParamField body="email" type="string" required>
+  A valid email address.
+</ParamField>
+
+<ParamField body="tel" type="string" required>
+  Moroccan phone number. Accepted formats: `06XXXXXXXX`, `07XXXXXXXX`, `05XXXXXXXX`, or the international prefix `+212` followed by the remaining digits.
+</ParamField>
+
+<ParamField body="etablissement_id" type="integer" required>
+  ID of an existing établissement. Selected via the dropdown on the form.
+</ParamField>
+
+<ParamField body="stage_id" type="integer" required>
+  ID of an existing stage. Selected via the dropdown on the form.
+</ParamField>
+
+<ParamField body="bureau_id" type="integer" required>
+  ID of an existing bureau. Selected via the dropdown on the form.
+</ParamField>
+
+<ParamField body="cv" type="file" required>
+  PDF file to upload as the trainee's CV. Maximum MIME type allowed: `application/pdf`.
+</ParamField>
+
+## Editing a trainee
+
+1. From the trainees list, click the **Edit** (pencil) button on the row you want to update. This opens `/stagiaires/{id}/edit`.
+2. Modify any fields as needed.
+3. To replace the CV, upload a new PDF file. The old file will be removed automatically. If you leave the CV field empty, the existing CV is kept.
+4. Click **Enregistrer** to save changes.
+
+## Viewing a trainee profile
+
+Click a trainee's name or the **Details** button to open their profile page (`/stagiaires/{id}`). The detail view shows all stored information for that trainee, including a link to download or view their CV.
+
+## Deleting a trainee
+
+Click the **Delete** (trash) button on the trainees list for the record you want to remove, then confirm the action.
+
+<Warning>
+  If a trainee has associated records in other tables (such as attestations), the deletion will fail and you will see an error message: "Impossible de supprimer le stagiaire. Veuillez d'abord supprimer les enregistrements associés." You must delete the related records (e.g. the trainee's attestation) before you can delete the trainee.
+</Warning>

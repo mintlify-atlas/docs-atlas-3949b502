@@ -1,0 +1,76 @@
+---
+title: "Attestations"
+description: "Generate and manage internship completion certificates"
+keywords: ["attestations", "certificates", "PDF", "statut", "remis", "nonremis", "date_prise"]
+---
+
+An attestation is the official completion certificate issued to a trainee at the end of their internship. It links a trainee to their stage and records which bureau and service oversaw the placement, along with the delivery status of the physical certificate.
+
+<Note>
+  Attestation records are created directly in the database (for example via seeders or database tooling). The application provides views for managing, updating status, generating PDFs, and deleting existing attestation records.
+</Note>
+
+## What an attestation record contains
+
+| Field | Description |
+|---|---|
+| Stagiaire | The trainee the certificate belongs to |
+| Stage | The internship assignment the certificate covers |
+| Bureau | The office that managed the trainee's placement |
+| Service | The specific department or service within the bureau |
+| Établissement | The trainee's educational institution (shown on the list, sourced from the trainee's profile) |
+| Statut | Delivery status: **remis** (delivered) or **non remis** (not yet delivered) |
+| Date de prise | The date the certificate was handed to the trainee (set automatically when the status is changed to **remis**) |
+
+## Listing attestations
+
+Navigate to **Attestations** from the sidebar, or go directly to `/Attestations`. The page shows a table of all attestations enriched with related data — trainee name, stage title, bureau, service, and établissement — so you have a complete picture without drilling into individual records.
+
+From this page you can update the delivery status, generate a PDF certificate, or delete a record.
+
+## Updating delivery status
+
+Each attestation has a status selector that lets you mark a certificate as delivered or not yet delivered.
+
+| Status | Meaning | Effect |
+|---|---|---|
+| `remis` | Certificate has been physically handed to the trainee | `date_prise` is automatically set to the current date and time |
+| `nonremis` | Certificate has not yet been delivered | `date_prise` is not updated |
+
+To change the status:
+
+1. On the attestations list page, locate the attestation row you want to update.
+2. Change the status selector to **remis** or **non remis**.
+3. Submit the form. The page reloads with a success message confirming the update.
+
+<Note>
+  When you set the status to **remis**, the system records the current timestamp as the `date_prise` automatically. You do not need to enter the date manually.
+</Note>
+
+## Generating a PDF certificate
+
+<Tip>
+  You can generate the PDF directly from the attestations list page without opening a separate form — just click the **Générer PDF** button on the relevant row.
+</Tip>
+
+<Steps>
+  <Step title="Locate the attestation">
+    On the attestations list page (`/Attestations`), find the row for the trainee you want to issue a certificate for.
+  </Step>
+  <Step title="Click Générer PDF">
+    Click the **Générer PDF** button on that row. The browser will navigate to `/generate-pdf/{id}`.
+  </Step>
+  <Step title="Download or print the PDF">
+    The PDF is streamed directly to your browser as `attestation.pdf`. Depending on your browser settings, it will either open inline for printing or prompt you to save the file.
+  </Step>
+</Steps>
+
+The generated PDF is built from the attestation data and includes the trainee's full details, their stage, bureau, service, and établissement.
+
+## Deleting an attestation
+
+Click the **Delete** button on the attestation row you want to remove and confirm the action. The record is deleted immediately and you are returned to the attestations list with a success message.
+
+<Warning>
+  Deleting an attestation is permanent. If you need to re-issue a certificate, you will need to recreate the attestation record first.
+</Warning>

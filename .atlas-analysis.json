@@ -1,0 +1,73 @@
+{
+  "projectType": "saas",
+  "projectName": "Manitern Pro",
+  "projectDescription": "A Laravel-based internship management platform for tracking trainees, stages, absences, attestations, and institutional relationships.",
+  "theme": "almond",
+  "primaryColor": "#040404",
+  "lightColor": "#ef370f",
+  "darkColor": "#f79d72",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": ["introduction", "getting-started/installation", "getting-started/configuration"]
+          },
+          {
+            "group": "Core Features",
+            "pages": [
+              "features/dashboard",
+              "features/stagiaires",
+              "features/stages",
+              "features/absences",
+              "features/attestations"
+            ]
+          },
+          {
+            "group": "Administration",
+            "pages": [
+              "administration/bureaux",
+              "administration/services",
+              "administration/etablissements",
+              "administration/user-management"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/pdf-generation",
+              "guides/search-filtering",
+              "guides/deployment"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Trainee (stagiaire) management with CV upload and profile tracking",
+    "Internship (stage) lifecycle management with status tracking",
+    "Absence recording and filtering for trainees",
+    "Attestation generation and PDF export via DomPDF",
+    "Multi-entity organization: bureaux, services, and institutions",
+    "Dashboard with real-time statistics and pie chart overview",
+    "Role-based authentication via Laravel Breeze and Sanctum",
+    "Full-text search across trainees by name, CIN, email, and bureau"
+  ],
+  "publicApiSurface": [
+    "GET /dashboard — Statistics overview",
+    "GET/POST /stagiaires — List and create trainees",
+    "GET/PUT/DELETE /stagiaires/{id} — Manage individual trainee",
+    "GET/POST /stages — List and create internships",
+    "GET/PUT/DELETE /stages/{id} — Manage individual internship",
+    "GET/POST /absences/index — List and record absences",
+    "GET /Attestations — List all attestations",
+    "GET /generate-pdf/{id} — Generate and stream attestation PDF",
+    "POST /attestations/{id}/update-statut — Update attestation delivery status",
+    "GET/POST /Etablissements — List and create institutions",
+    "GET/POST /services/index — List and create services",
+    "GET/POST /bureau — List and create bureaux"
+  ]
+}

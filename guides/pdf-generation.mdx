@@ -1,0 +1,72 @@
+---
+title: "PDF generation"
+description: "Generate and download attestation certificates as PDF files"
+---
+
+Manitern Pro uses DomPDF (via the `barryvdh/laravel-dompdf` package) to render attestation certificates as PDF files. When you trigger generation, the application loads the attestation record with all related data, renders a Blade template into HTML, and streams the resulting PDF directly to your browser for download — no temporary file is saved on disk.
+
+## What the PDF contains
+
+Each generated attestation certificate includes the following information drawn from the database:
+
+| Field | Source |
+|---|---|
+| Trainee full name (nom + prenom) | `stagiaire` relation |
+| CIN (national ID number) | `stagiaire` relation |
+| Stage subject / specialty (titre\_sujet) | `stage` relation |
+| Stage start and end dates | `stage` relation |
+| Service name (libelle) | `service` relation |
+| Bureau name (libelle) | `bureau` relation |
+| Generation date | Server date at time of request |
+
+<Note>
+  The attestation template is pre-configured for the Direction Provinciale de Berkane (Ministère de l'Education Nationale, du Préscolaire et des Sports). The header, footer, and official language are fixed in the Blade template.
+</Note>
+
+## Generate a PDF
+
+<Steps>
+  <Step title="Navigate to Attestations">
+    In the sidebar, click **Attestations** to open the attestations listing page (`/Attestations`).
+  </Step>
+  <Step title="Find the attestation record">
+    Locate the attestation you want to export. Each row displays the linked trainee, stage, bureau, and service.
+  </Step>
+  <Step title="Click Generate PDF">
+    Click the **Generate PDF** button or link for that row. This sends a `GET` request to:
+
+    ```
+    GET /generate-pdf/{id}
+    ```
+
+    where `{id}` is the attestation's database ID.
+  </Step>
+  <Step title="Download the PDF">
+    The PDF streams directly to your browser. Your browser will either open a download dialog or display the file inline, depending on your browser settings. The file is named `attestation.pdf`.
+  </Step>
+</Steps>
+
+<Note>
+  The attestation record must have a linked stagiaire, stage, bureau, and service before you attempt to generate a PDF. If any of these relations are missing, the controller will fail to load the required data and the PDF will not render correctly.
+</Note>
+
+## Delivery status (statut)
+
+After the physical certificate is printed and handed to the trainee, update the delivery status to record the handover.
+
+| Value | Meaning |
+|---|---|
+| `nonremis` | Certificate has not yet been delivered |
+| `remis` | Certificate has been handed to the trainee |
+
+When you set `statut` to `remis`, the `date_prise` field is automatically set to the current timestamp. This is done server-side in `AttestationController::updateStatut` — you do not need to enter a date manually.
+
+Route:
+
+```
+POST /attestations/{id}/update-statut
+```
+
+<Tip>
+  Update the delivery status to `remis` immediately after handing over the certificate. This records an accurate `date_prise` timestamp and keeps the attestations list in sync with physical records.
+</Tip>

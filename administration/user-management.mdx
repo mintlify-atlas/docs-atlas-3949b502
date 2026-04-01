@@ -1,0 +1,81 @@
+---
+title: "User management"
+description: "Manage your Manitern Pro account and user access"
+---
+
+Manitern Pro uses email and password authentication. You must be logged in to access the dashboard and any of the management features. This page covers how to register, log in, manage your profile, and delete your account.
+
+<CardGroup cols={2}>
+  <Card title="Register" icon="user-plus" href="#registering-an-account">
+    Create a new Manitern Pro account with your name, email, and password.
+  </Card>
+  <Card title="Log in" icon="lock" href="#logging-in">
+    Sign in to access your dashboard and all management features.
+  </Card>
+  <Card title="Profile" icon="circle-user" href="#profile-management">
+    Update your name, email address, or password at any time.
+  </Card>
+  <Card title="Delete account" icon="trash" href="#deleting-your-account">
+    Permanently remove your account and all associated data.
+  </Card>
+</CardGroup>
+
+## Registering an account
+
+Go to `/register` to create a new account. Fill in the following fields:
+
+| Field | Description |
+|-------|-------------|
+| Name | Your display name |
+| Email | Your email address (used to log in) |
+| Password | A secure password |
+| Confirm Password | Re-enter your password to confirm |
+
+Click **Register** to submit. You will be taken directly to your dashboard upon successful registration.
+
+## Logging in
+
+Go to `/login` and enter your registered email address and password. Click **Log in** to access your dashboard.
+
+If you have forgotten your password, click the **Forgot your password?** link on the login page. Enter your email address and a password reset link will be sent to your inbox.
+
+<Note>
+  All dashboard pages — including bureaux, services, etablissements, trainees, and attestations — require you to be logged in. You will be redirected to the login page if you try to access them while signed out.
+</Note>
+
+## Profile management
+
+Navigate to `/profile` (or click your profile link in the navigation) to manage your account details. The profile page has three sections:
+
+### Update profile information
+
+Update your **Name** and **Email** fields and click **Save** to apply the changes.
+
+### Update password
+
+To change your password:
+
+1. Enter your **Current Password**.
+2. Enter a **New Password**.
+3. Re-enter the new password in the **Confirm Password** field.
+4. Click **Save**.
+
+### Resetting a forgotten password
+
+If you are already logged out and cannot remember your password, use the **Forgot your password?** link on the login page instead.
+
+## Deleting your account
+
+<Warning>
+  Account deletion is permanent and cannot be undone. All your data will be irreversibly removed. Download or export any information you need before proceeding.
+</Warning>
+
+To delete your account:
+
+1. Go to `/profile`.
+2. Scroll to the **Delete Account** section at the bottom of the page.
+3. Click the **Delete Account** button.
+4. A confirmation dialog will appear. Enter your current password to confirm.
+5. Click **Delete Account** in the dialog to permanently delete your account.
+
+You will be signed out and redirected to the home page immediately after deletion.

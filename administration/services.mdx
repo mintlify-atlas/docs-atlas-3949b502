@@ -1,0 +1,55 @@
+---
+title: "Services"
+description: "Manage the service departments within your organization"
+---
+
+A **service** is a top-level department in your organization. Services sit at the top of the organizational hierarchy — bureaux (office units) belong to services, and trainees are then assigned to those bureaux:
+
+```
+Service → Bureau → Stagiaire
+```
+
+You need at least one service before you can create any bureaux or assign trainees.
+
+<Tip>
+  Set up your services first. Because bureaux require a parent service, the recommended setup order is: create services, then create bureaux, then register trainees.
+</Tip>
+
+## Listing services
+
+Navigate to the **Services** section from the sidebar. The page displays a paginated table (5 services per page) with the following column:
+
+| Column | Description |
+|--------|-------------|
+| Libellé | The name of the service/department |
+
+Each row has edit and delete action buttons. Use the pagination controls at the bottom of the table to move between pages.
+
+## Creating a service
+
+<Steps>
+  <Step title="Open the create form">
+    On the Services list page, click the **+ Ajouter nouveau service** button.
+  </Step>
+  <Step title="Enter the service name">
+    Fill in the **Libellé du service** field with the department name. This field is required.
+  </Step>
+  <Step title="Save">
+    Click **Ajouter** to create the service. You will be redirected back to the services list with a confirmation message. Click **Annuler** at any time to discard the form and return to the list.
+  </Step>
+</Steps>
+
+## Editing a service
+
+1. On the Services list page, click the edit icon next to the service you want to update.
+2. The edit form opens pre-filled with the service's current **Libellé**.
+3. Update the name and click **Modifier** to save your changes.
+4. Click **Annuler** to discard your changes and return to the list.
+
+## Deleting a service
+
+On the Services list page, click the delete icon next to the service you want to remove. A confirmation dialog will appear. Click **OK** to confirm the deletion.
+
+<Note>
+  Deleting a service is permanent. Before removing a service, ensure that all bureaux belonging to it have been reassigned or deleted, as bureaux require a valid parent service.
+</Note>

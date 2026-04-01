@@ -1,0 +1,74 @@
+---
+title: "Dashboard"
+description: "Overview of your internship program statistics"
+keywords: ["dashboard", "statistics", "overview", "stagiaires", "attestations", "absences"]
+---
+
+The dashboard is the first page you see after logging in. It gives you a high-level snapshot of your internship program across all key entities, so you can monitor program health at a glance without navigating to individual sections.
+
+<Note>
+  Authentication is required to access the dashboard. If you are not logged in, you will be redirected to the login page automatically.
+</Note>
+
+## Stat cards
+
+The dashboard displays six summary cards, each showing a live count pulled directly from the database.
+
+<CardGroup cols={3}>
+  <Card title="Stagiaires" icon="user-graduate">
+    Total number of trainees registered in the system.
+  </Card>
+  <Card title="Etablissements" icon="building-columns">
+    Total number of educational institutions on record.
+  </Card>
+  <Card title="Attestations" icon="file-certificate">
+    Total number of internship completion certificates issued or pending.
+  </Card>
+  <Card title="Absences" icon="calendar-xmark">
+    Total number of absence records logged across all trainees.
+  </Card>
+  <Card title="Stages" icon="briefcase">
+    Total number of internship assignments created in the system.
+  </Card>
+  <Card title="Bureaux" icon="building">
+    Total number of offices (bureaux) configured in the system.
+  </Card>
+</CardGroup>
+
+## Distribution chart
+
+Below the stat cards, the dashboard displays a pie chart (powered by Chart.js) that visualises the relative distribution of records across four core entities:
+
+| Segment | What it counts |
+|---|---|
+| Stagiaires | Number of registered trainees |
+| Etablissements | Number of institutions |
+| Attestations | Number of certificates |
+| Absences | Number of recorded absences |
+
+The chart updates automatically to reflect the current state of your data each time the page loads.
+
+## Quick-link cards
+
+The dashboard also includes a set of navigation cards that let you jump directly to each main section of the application.
+
+<CardGroup cols={2}>
+  <Card title="Stagiaires" icon="user-graduate" href="/features/stagiaires">
+    View and manage all registered trainees.
+  </Card>
+  <Card title="Etablissements" icon="building-columns" href="/administration/etablissements">
+    View and manage educational institutions.
+  </Card>
+  <Card title="Stages" icon="briefcase" href="/features/stages">
+    View and manage internship assignments.
+  </Card>
+  <Card title="Absences" icon="calendar-xmark" href="/features/absences">
+    View and manage trainee absence records.
+  </Card>
+  <Card title="Attestations" icon="file-certificate" href="/features/attestations">
+    View and manage internship certificates.
+  </Card>
+  <Card title="Bureaux" icon="building" href="/administration/bureaux">
+    View and manage office (bureau) records.
+  </Card>
+</CardGroup>
